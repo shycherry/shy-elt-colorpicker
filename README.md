@@ -1,2 +1,2 @@
-shy-ele-colorpicker
+shy-elt-colorpicker
 ===================
