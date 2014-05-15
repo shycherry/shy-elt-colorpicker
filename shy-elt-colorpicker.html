@@ -45,6 +45,9 @@
       ready : function(){
         this.cancelUnbindAll();
       },
+      detached : function(){
+        this.cancelUnbindAll();
+      },
       widthChanged: function(a,b,c){        
         this.height = this.width;        
       },
@@ -89,13 +92,6 @@
           b += increments[direction].b;
           this.buildRing(xoffset, yoffset, r, g, b, i);
         }
-
-      },
-      ready: function(){
-        console.log(this.$.path0);
-      },
-      created: function(){
-
       }
     });
   </script>
