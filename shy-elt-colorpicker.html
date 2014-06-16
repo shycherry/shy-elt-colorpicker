@@ -42,12 +42,6 @@
     Polymer('shy-elt-colorpicker',{
       width: 256,
       height: 256,
-      ready : function(){
-        this.cancelUnbindAll();
-      },
-      detached : function(){
-        this.cancelUnbindAll();
-      },
       widthChanged: function(a,b,c){        
         this.height = this.width;        
       },
