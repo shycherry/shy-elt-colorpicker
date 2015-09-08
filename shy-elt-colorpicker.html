@@ -1,13 +1,13 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <polymer-element name="shy-elt-colorpicker" attributes="width height">
-  <template>  
+  <template>
     <svg width="{{width}}" height="{{height}}" xmlns="http://www.w3.org/2000/svg">
      <g id="rootgraph" transform="scale({{width/256}})">
-       <path transform="translate(120,120)" id="path0" stroke="#000000" fill="#ffffff" d="m0,4c0,0 8,-4 8,-4c0,0 8,4 8,4c0,0 0,10 0,10c0,0 -8,4 -8,4c0,0 -8,-4 -8,-4l0,-10z"/>
+       <path transform="translate(120,120)" id="path0" stroke="#000000" stroke-width="0" fill="#ffffff" d="m0,4c0,0 8,-4 8,-4c0,0 8,4 8,4c0,0 0,10 0,10c0,0 -8,4 -8,4c0,0 -8,-4 -8,-4l0,-10z"/>
      </g>
     </svg>
-    <br/>    
+    <br/>
     <input id="widthInput" type="range" min="64" max="1024" value="{{width}}">
     <br/>
   </template>
@@ -42,21 +42,34 @@
     Polymer('shy-elt-colorpicker',{
       width: 256,
       height: 256,
-      widthChanged: function(a,b,c){        
-        this.height = this.width;        
+      widthChanged: function(a,b,c){
+        this.height = this.width;
       },
-      heightChanged: function(a,b,c){        
+      heightChanged: function(a,b,c){
         this.width = this.height;
+      },
+      ready : function(){
+        this.$.rootgraph.addEventListener("click", function(ev){
+
+          if(ev.toElement.nodeName == "path"){
+            if(this.selectedPath){
+              this.selectedPath.setAttribute("stroke-width",0)
+            }
+            this.selectedPath = ev.toElement;
+            this.selectedPath.setAttribute("stroke-width", 1);
+          }
+
+        }.bind(this));
       },
       buildRing: function(x, y, r, g, b, rank){
         var maxId = rank * 6;
         var repCount = 0;
         var direction = 2;
-        
+
         for(var idx=0; idx<maxId; idx++){
-          var clonedPath = this.$.path0.cloneNode(true);          
+          var clonedPath = this.$.path0.cloneNode(true);
           clonedPath.setAttribute('transform', 'translate('+x+','+y+')');
-          clonedPath.setAttribute('id', 'path'+x+''+y+''+rank);          
+          clonedPath.setAttribute('id', 'path'+x+''+y+''+rank);
           clonedPath.setAttribute('fill', buildHexColorString(r,g,b));
           this.$.rootgraph.appendChild(clonedPath);
           if(repCount == rank){
@@ -71,7 +84,7 @@
           b += increments[direction].b;
         }
       },
-      attached: function(){        
+      attached: function(){
         var xoffset = (256/2 - 8);
         var yoffset = (256/2 - 8);
         var r = 255;
@@ -85,6 +98,18 @@
           g += increments[direction].g;
           b += increments[direction].b;
           this.buildRing(xoffset, yoffset, r, g, b, i);
+        }
+      },
+      getSelectedRGB: function(){
+        function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
+        function hexToG(h) {return parseInt((cutHex(h)).substring(2,4),16)}
+        function hexToB(h) {return parseInt((cutHex(h)).substring(4,6),16)}
+        function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+        var selectedHexColor = this.selectedPath ? this.selectedPath.getAttribute("fill") : "#FFFFFF";
+        return {
+          "r" : hexToR(selectedHexColor),
+          "g" : hexToG(selectedHexColor),
+          "b" : hexToB(selectedHexColor)
         }
       }
     });
