@@ -1,0 +1,19 @@
+{
+  "name": "shy-elt-colorpicker",
+  "version": "0.0.0",
+  "homepage": "https://github.com/shycherry/shy-elt-colorpicker",
+  "authors": [
+    "shycherry <vinpowful@free.fr>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "~1.1.3"
+  }
+}
