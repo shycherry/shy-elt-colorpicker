@@ -51,13 +51,11 @@
       colorPickerSize: {type: Number, value: 256}
     },
     computeScale : function(colorPickerSize){
-      console.log(colorPickerSize)
       return "scale("+colorPickerSize/256+")";
     },
     ready : function(){
       this.addEventListener("iron-resize", function(ev){
         this.colorPickerSize = Math.min(this.clientWidth, this.clientHeight);
-        console.log(Math.min(this.clientWidth, this.clientHeight))
       });
       this.$.rootgraph.addEventListener("click", function(ev){
 
